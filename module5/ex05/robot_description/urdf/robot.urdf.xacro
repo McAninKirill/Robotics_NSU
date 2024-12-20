@@ -5,13 +5,13 @@
     <!--xacro:include filename="$(find robot_description)/urdf/lidar.urdf.xacro" /-->
     <!--xacro:include filename="$(find robot_description)/urdf/depth.urdf.xacro" /-->
 
-    <xacro:property name="chassis_length" value="0.935"/>
+    <xacro:property name="chassis_length" value="0.635"/>
     <xacro:property name="chassis_width" value="0.165"/>
     <xacro:property name="chassis_height" value="0.138"/>
     <xacro:property name="wheel_radius" value="0.133"/>
     <xacro:property name="wheel_thickness" value="0.076"/>
     <xacro:property name="wheel_mass" value="0.95"/>
-    <xacro:property name="wheel_offset_x" value="0.926"/>
+    <xacro:property name="wheel_offset_x" value="0.6"/>
     <xacro:property name="wheel_offset_y" value="0.1285"/>
     <xacro:property name="wheel_offset_z" value="0.11"/>
     <xacro:property name="caster_wheel_radius" value="0.03"/>
@@ -72,7 +72,7 @@
         <geometry>
             <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
         </geometry>
-        <material name="orange"/>
+        <material name="blue"/>
     </visual>
     <collision>
         <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
@@ -117,13 +117,13 @@
     <link name="sub_spoiler">
         <visual>
             <geometry>
-            <box size="${(1/12) * chassis_length} ${chassis_width/5} ${chassis_height}"/>
+            <box size="${(1/12) * chassis_length} ${chassis_width/3} ${chassis_height}"/>
         </geometry>
             <material name="white"/>
         </visual>
         <collision>
             <geometry>
-                <box size="${(1/12) * chassis_length} ${chassis_width/5} ${chassis_height}"/>
+                <box size="${(1/12) * chassis_length} ${chassis_width/3} ${chassis_height}"/>
             </geometry>
         </collision>
     </link>
@@ -139,7 +139,7 @@
             <geometry>
             <box size="${(1/10) * chassis_length} ${chassis_width * 2} ${chassis_height / 5}"/>
         </geometry>
-            <material name="white"/>
+            <material name="blue"/>
         </visual>
         <collision>
             <geometry>
@@ -223,5 +223,38 @@
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
     </gazebo>
+
+<link name="front_box">
+    <visual>
+        <origin xyz="${chassis_length/6} 0 ${chassis_height/2}" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.3 0.1 0.2"/> 
+        </geometry>
+        <material name="white"/> 
+    </visual>
+    <collision>
+        <origin xyz="${chassis_length/6} 0 ${chassis_height/2}" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.3 0.1 0.2"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <origin xyz="${chassis_length/6} 0 ${chassis_height/2}" rpy="0 0 0"/>
+        <mass value="0.5"/> 
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0"
+                 izz="0.001"/>
+    </inertial>
+</link>
+
+<joint name="front_box_joint" type="fixed">
+    <parent link="chassis"/> 
+    <child link="front_box"/>
+    <origin xyz="${chassis_length/6} 0 ${chassis_height/2}" rpy="0 0 0"/>
+</joint>
+
+<gazebo reference="front_box">
+    <material>Gazebo/Red</material>
+</gazebo>
 
 </robot>
